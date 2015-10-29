@@ -16,13 +16,15 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JList;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class FatBlaster {
 
 	private JFrame frmFatBlasterPrototype;
 	private String[] calcStrings = { "BMI", "BMR", "BFP", "Weight Loss" };
-	private JTextField textField;
-	private JTextField textField_1;
+	private JTextField textHeight;
+	private JTextField textWeight;
 	private JTextField textField_2;
 	private JTextField textField_3;
 	private JTextField textField_4;
@@ -36,6 +38,7 @@ public class FatBlaster {
 	private JTextField textField_12;
 	private JTextField textField_13;
 	private JTextField textField_14;
+	public boolean metric ;
 	/**
 	 * Launch the application.
 	 */
@@ -77,31 +80,57 @@ public class FatBlaster {
 		tabbedPane.addTab("BMI", null, pnlBMI, null);
 		pnlBMI.setLayout(new MigLayout("", "[55px][63px,grow]", "[23px][][][][][]"));
 		
-		JRadioButton rdbtnNewRadioButton = new JRadioButton("Metric");
-		pnlBMI.add(rdbtnNewRadioButton, "cell 0 0,alignx left,aligny top");
+		JRadioButton rdBtnImperial = new JRadioButton("Imperial");
+
+		pnlBMI.add(rdBtnImperial, "cell 0 1,alignx left,aligny top");
 		
-		JRadioButton rdbtnImperial = new JRadioButton("Imperial");
-		pnlBMI.add(rdbtnImperial, "cell 0 1,alignx left,aligny top");
+		JRadioButton rdBtnMetric = new JRadioButton("Metric");
+		rdBtnMetric.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e)
+			{
+				metric=true;
+				if(rdBtnImperial.isSelected())
+				{
+					rdBtnImperial.setSelected(false);
+				}
+			}
+		});
+		rdBtnImperial.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) 
+			{
+				metric=false;
+				if(rdBtnMetric.isSelected())
+				{
+					rdBtnMetric.setSelected(false);
+				}
+			}
+		});
+		pnlBMI.add(rdBtnMetric, "cell 0 0,alignx left,aligny top");
+		
+
 		
 		JLabel lblNewLabel = new JLabel("Height");
 		pnlBMI.add(lblNewLabel, "cell 0 2,alignx left");
 		
-		textField = new JTextField();
-		pnlBMI.add(textField, "cell 1 2,alignx left");
-		textField.setColumns(10);
+		textHeight = new JTextField();
+		pnlBMI.add(textHeight, "cell 1 2,alignx left");
+		textHeight.setColumns(10);
 		
 		JLabel lblWeight = new JLabel("Weight");
 		pnlBMI.add(lblWeight, "cell 0 3,alignx left");
 		
-		textField_1 = new JTextField();
-		pnlBMI.add(textField_1, "cell 1 3,alignx left");
-		textField_1.setColumns(10);
+		textWeight = new JTextField();
+		pnlBMI.add(textWeight, "cell 1 3,alignx left");
+		textWeight.setColumns(10);
 		
 		JButton btnCalculate = new JButton("Calculate");
+
 		pnlBMI.add(btnCalculate, "cell 0 5");
 		
-		JLabel lblNewLabel_1 = new JLabel("Your BMI is 21.3");
-		pnlBMI.add(lblNewLabel_1, "cell 1 5");
+		JLabel lblBMI = new JLabel("Your BMI is 21.3");
+		pnlBMI.add(lblBMI, "cell 1 5");
 		
 		JPanel pnlBMR = new JPanel();
 		tabbedPane.addTab("BMR", null, pnlBMR, null);
@@ -326,6 +355,33 @@ public class FatBlaster {
 		
 		JMenu mnNewMenu_1 = new JMenu("View");
 		menuBar.add(mnNewMenu_1);
+		
+		btnCalculate.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) 
+			{
+				
+				String height = textHeight.getText();
+				String weight = textWeight.getText();
+				float BMI;
+				BMI= BMI(Float.parseFloat(height),Float.parseFloat(weight));
+				lblBMI.setText("Your BMI is:"+Float.toString(BMI));
+			}
+		});
 	}
 
+	public float BMI(float height,float weight)
+	{
+		float BMI;
+		if(metric)
+		{
+			 BMI = weight/(height*height);
+		}
+		else
+		{
+			BMI = weight*703/(height*height);
+		}
+		return BMI;
+		
+	}
 }
