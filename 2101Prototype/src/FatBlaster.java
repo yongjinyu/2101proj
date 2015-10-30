@@ -360,12 +360,16 @@ public class FatBlaster {
 			@Override
 			public void mouseClicked(MouseEvent arg0) 
 			{
-				
-				String height = textHeight.getText();
-				String weight = textWeight.getText();
-				float BMI;
-				BMI= BMI(Float.parseFloat(height),Float.parseFloat(weight));
-				lblBMI.setText("Your BMI is:"+Float.toString(BMI));
+				int tabIndex;
+				tabIndex = tabbedPane.getSelectedIndex();
+				if(tabIndex==0)
+				{
+					String height = textHeight.getText();
+					String weight = textWeight.getText();
+					float BMI;
+					BMI= BMI(Float.parseFloat(height),Float.parseFloat(weight));
+					lblBMI.setText("Your BMI is:"+Float.toString(BMI));
+				}
 			}
 		});
 	}
