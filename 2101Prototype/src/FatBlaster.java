@@ -23,11 +23,12 @@ public class FatBlaster {
 
 	private JFrame frmFatBlasterPrototype;
 	private String[] calcStrings = { "BMI", "BMR", "BFP", "Weight Loss" };
+	private String gender = " ";
 	private JTextField textHeight1;
 	private JTextField textWeight;
-	private JTextField textField_2;
-	private JTextField textField_3;
-	private JTextField textField_4;
+	private JTextField heightField;
+	private JTextField weightField;
+	private JTextField ageField;
 	private JTextField textField_5;
 	private JTextField textField_6;
 	private JTextField textField_7;
@@ -40,6 +41,7 @@ public class FatBlaster {
 	private JTextField textField_14;
 	public boolean metric =true;
 	private JTextField textHeight2;
+	private JTextField inchField;
 	/**
 	 * Launch the application.
 	 */
@@ -125,49 +127,165 @@ public class FatBlaster {
 		JLabel lblHeight2 = new JLabel("centimetres");
 		pnlBMI.add(lblHeight2, "cell 1 2");
 		
+		
+		//BMR START HERE-----------------------------------------------------------------------------//
 		JPanel pnlBMR = new JPanel();
 		tabbedPane.addTab("BMR", null, pnlBMR, null);
 		pnlBMR.setLayout(new MigLayout("", "[55px][71px,grow]", "[23px][][][][][]"));
-		
+		// Metric and Imperial setting
 		JRadioButton rdbtnMetric = new JRadioButton("Metric");
-		pnlBMR.add(rdbtnMetric, "cell 0 0,alignx left,aligny top");
-		
-		JRadioButton rdbtnMale = new JRadioButton("Male");
-		pnlBMR.add(rdbtnMale, "cell 1 0");
-		
 		JRadioButton rdbtnImperial_3 = new JRadioButton("Imperial");
+		
+		
+		rdbtnMetric.setSelected(true);
+		pnlBMR.add(rdbtnMetric, "cell 0 0,alignx left,aligny top");
 		pnlBMR.add(rdbtnImperial_3, "cell 0 1");
 		
+		// Male and Female setting
+		JRadioButton rdbtnMale = new JRadioButton("Male");
 		JRadioButton rdbtnFemale = new JRadioButton("Female");
+		
+		rdbtnMale.setSelected(true);
+	
+		pnlBMR.add(rdbtnMale, "cell 1 0");
 		pnlBMR.add(rdbtnFemale, "cell 1 1");
 		
+		// Height, Weight and Age setting
 		JLabel lblHeight = new JLabel("Height");
 		pnlBMR.add(lblHeight, "cell 0 2,alignx trailing");
 		
-		textField_2 = new JTextField();
-		pnlBMR.add(textField_2, "cell 1 2,alignx left");
-		textField_2.setColumns(10);
+		heightField = new JTextField();
+		pnlBMR.add(heightField, "flowx,cell 1 2,alignx left");
+		heightField.setColumns(10);
 		
 		JLabel lblWeight_1 = new JLabel("Weight");
 		pnlBMR.add(lblWeight_1, "cell 0 3,alignx trailing");
 		
-		textField_3 = new JTextField();
-		pnlBMR.add(textField_3, "cell 1 3,alignx left");
-		textField_3.setColumns(10);
+		weightField = new JTextField();
+		pnlBMR.add(weightField, "flowx,cell 1 3,alignx left");
+		weightField.setColumns(10);
 		
 		JLabel lblAge = new JLabel("Age");
 		pnlBMR.add(lblAge, "cell 0 4,alignx trailing");
 		
-		textField_4 = new JTextField();
-		pnlBMR.add(textField_4, "cell 1 4,alignx left");
-		textField_4.setColumns(10);
+		ageField = new JTextField();
+		pnlBMR.add(ageField, "flowx,cell 1 4,alignx left");
+		ageField.setColumns(10);
 		
-		JButton btnCalculate_1 = new JButton("Calculate");
-		pnlBMR.add(btnCalculate_1, "cell 0 5");
+		JLabel lblCm = new JLabel("Centimeters");
+		pnlBMR.add(lblCm, "cell 1 2");
 		
-		JLabel lblNewLabel_2 = new JLabel("Your Daily BMR is  1631 calories");
+		JLabel lblKilogram = new JLabel("Kilograms");
+		pnlBMR.add(lblKilogram, "cell 1 3");
+		
+		JLabel lblYears = new JLabel("Years");
+		pnlBMR.add(lblYears, "cell 1 4");
+		
+		JLabel lblNewLabel_2 = new JLabel("");
 		pnlBMR.add(lblNewLabel_2, "cell 1 5");
 		
+		inchField = new JTextField();
+		inchField.setEnabled(false);
+		inchField.setVisible(false);
+		pnlBMR.add(inchField, "cell 1 2");
+		inchField.setColumns(10);
+		
+		JLabel lblInches = new JLabel("Inches");
+		lblInches.setEnabled(false);
+		lblInches.setVisible(false);
+		pnlBMR.add(lblInches, "cell 1 2");
+		
+		//EVENT HANDLER BMR--------------------------------------------------------------------------//
+		rdbtnMetric.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				metric = true;
+				rdbtnImperial_3.setSelected(false);
+				lblCm.setText("Centimeters");
+				lblKilogram.setText("Kilograms");
+				heightField.setText("");
+				weightField.setText("");
+				inchField.setEnabled(false);
+				inchField.setVisible(false);
+				lblInches.setEnabled(false);
+				lblInches.setVisible(false);
+			}
+		});
+		
+		rdbtnImperial_3.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				metric = false;
+				rdbtnMetric.setSelected(false);
+				lblCm.setText("Foot");
+				lblKilogram.setText("Pounds");
+				heightField.setText("");
+				weightField.setText("");
+				inchField.setEnabled(true);
+				inchField.setVisible(true);
+				lblInches.setEnabled(true);
+				lblInches.setVisible(true);
+			}
+		});
+		
+		rdbtnMale.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				gender = "M";
+				rdbtnFemale.setSelected(false);
+			}
+		});
+		rdbtnFemale.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				gender = "F";
+				rdbtnMale.setSelected(false);
+			}
+		});
+		
+		//CALCULATE BMR------------------------------------------------------------------------------//
+		JButton btnCalculate_1 = new JButton("Calculate");
+		btnCalculate_1.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				int tabIndex;
+				tabIndex = tabbedPane.getSelectedIndex();
+				if(tabIndex==1)
+				{
+					float BMRvalue;
+					
+					if(metric)
+					{
+						String height = heightField.getText();
+						String weight = weightField.getText();
+						String age = ageField.getText();
+						BMRvalue= BMR(Float.parseFloat(weight),Float.parseFloat(height),Integer.parseInt(age));
+						String strBMR = String.format("%.2f", BMRvalue);
+						lblNewLabel_2.setText("Your Daily BMR is:"+ strBMR +"calories");
+					}
+					else if(!metric)
+					{
+						String height = heightField.getText();
+						String inch = inchField.getText();
+						String weight = weightField.getText();
+						String age = ageField.getText();
+						double impWeight  = Double.parseDouble(weight)* 0.453592;
+						double impInch = Double.parseDouble(inch) * 2.54 ;
+						double impFeet = Double.parseDouble(height) * 12 * 2.54 ;
+						double total = impInch + impFeet;
+						BMRvalue= BMR(((float)(impWeight)),((float)(total)),Integer.parseInt(age));
+						String strBMR = String.format("%.2f", BMRvalue);
+						lblNewLabel_2.setText("Your Daily BMR is: "+ strBMR +" calories");
+					}
+				}
+			}
+		});
+		pnlBMR.add(btnCalculate_1, "cell 0 5");
+		//BMR ENDS ----------------------------------------------------------------------------------//
+
+		
+		
+		//BFP START----------------------------------------------------------------------------------//
 		JPanel pnlBFP = new JPanel();
 		tabbedPane.addTab("BFP", null, pnlBFP, null);
 		pnlBFP.setLayout(new MigLayout("", "[55px][63px,grow]", "[23px][][][][][][]"));
@@ -431,5 +549,33 @@ public class FatBlaster {
 		}
 		return BMI;
 		
+	}
+	
+	public float BMR(float weight, float height, int age)
+	{
+		float BMR = 0;
+		if(gender == "F"){
+			BMR = (float)((10.0*weight) + (6.25*height) - (5.0*age) - 161);
+		}
+		else{ 
+			BMR = (float)((10.0*weight) + (6.25*height) - (5.0*age) + 5);
+		}
+		return BMR;
+	}
+	
+	public float BFP(float waist, float height, float neck, float hip)
+	{
+		float BFP = 0;
+		
+			if(gender == "F"){
+				BFP = 	(float) (495/(1.0324 - (0.19077*(Math.log(waist-neck))) + (0.15456*(Math.log(height))))-450);
+			}
+	
+			else if(gender == "M"){
+				BFP = (float) (495/(1.29579-(0.35004*(Math.log(waist+hip-neck)))+(0.22100*(Math.log(height))))-450);
+			}
+		
+		
+		return BFP;
 	}
 }
