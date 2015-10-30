@@ -109,7 +109,7 @@ public class FatBlaster {
 
 		pnlBMI.add(btnCalculate, "cell 0 5");
 		
-		JLabel lblBMI = new JLabel("Your BMI is 21.3");
+		JLabel lblBMI = new JLabel("");
 		pnlBMI.add(lblBMI, "cell 1 5");
 		
 		JLabel lblHeight1 = new JLabel("metres");
@@ -357,24 +357,32 @@ public class FatBlaster {
 				tabIndex = tabbedPane.getSelectedIndex();
 				if(tabIndex==0)
 				{
+					float BMIvalue;
+					
 					if(metric)
 					{
 					String height = textHeight1.getText();
 					String height2 = textHeight2.getText();
 					String weight = textWeight.getText();
-					float BMI;
-					BMI= BMI(	(	(Float.parseFloat(height))	+	Float.parseFloat(height2)/100),	Float.parseFloat(weight)	);
-					lblBMI.setText("Your BMI is:"+Float.toString(BMI));
+					BMIvalue= BMI(	(	(Float.parseFloat(height))	+	Float.parseFloat(height2)/100),	Float.parseFloat(weight)	);
+					String strBMI = String.format("%.2f", BMIvalue);
+					lblBMI.setText("Your BMI is:"+ strBMI);
 					}
 					else if(!metric)
 					{
 						String height = textHeight1.getText();
 						String height2 = textHeight2.getText();
 						String weight = textWeight.getText();
-						float BMI;
-						BMI= BMI(	(	(Float.parseFloat(height)*12)	+	Float.parseFloat(height2)	),	Float.parseFloat(weight)	);
-						lblBMI.setText("Your BMI is:"+ Float.toString(BMI));
+						
+						BMIvalue= BMI(	(	(Float.parseFloat(height)*12)	+	Float.parseFloat(height2)	),	Float.parseFloat(weight)	);
+						String strBMI = String.format("%.2f", BMIvalue);
+						lblBMI.setText("Your BMI is:"+ strBMI);
+						
+						
 					}
+					
+					
+					
 				}
 			}
 		});
