@@ -23,7 +23,7 @@ public class FatBlaster {
 
 	private JFrame frmFatBlasterPrototype;
 	private String[] calcStrings = { "BMI", "BMR", "BFP", "Weight Loss" };
-	private JTextField textHeight;
+	private JTextField textHeight1;
 	private JTextField textWeight;
 	private JTextField textField_2;
 	private JTextField textField_3;
@@ -38,7 +38,8 @@ public class FatBlaster {
 	private JTextField textField_12;
 	private JTextField textField_13;
 	private JTextField textField_14;
-	public boolean metric ;
+	public boolean metric =true;
+	private JTextField textHeight2;
 	/**
 	 * Launch the application.
 	 */
@@ -85,44 +86,23 @@ public class FatBlaster {
 		pnlBMI.add(rdBtnImperial, "cell 0 1,alignx left,aligny top");
 		
 		JRadioButton rdBtnMetric = new JRadioButton("Metric");
-		rdBtnMetric.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e)
-			{
-				metric=true;
-				if(rdBtnImperial.isSelected())
-				{
-					rdBtnImperial.setSelected(false);
-				}
-			}
-		});
-		rdBtnImperial.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) 
-			{
-				metric=false;
-				if(rdBtnMetric.isSelected())
-				{
-					rdBtnMetric.setSelected(false);
-				}
-			}
-		});
 		pnlBMI.add(rdBtnMetric, "cell 0 0,alignx left,aligny top");
+		rdBtnMetric.setSelected(true);
 		
 
 		
 		JLabel lblNewLabel = new JLabel("Height");
 		pnlBMI.add(lblNewLabel, "cell 0 2,alignx left");
 		
-		textHeight = new JTextField();
-		pnlBMI.add(textHeight, "cell 1 2,alignx left");
-		textHeight.setColumns(10);
+		textHeight1 = new JTextField();
+		pnlBMI.add(textHeight1, "flowx,cell 1 2,alignx left");
+		textHeight1.setColumns(10);
 		
-		JLabel lblWeight = new JLabel("Weight");
-		pnlBMI.add(lblWeight, "cell 0 3,alignx left");
+		JLabel lblWeightBMI1 = new JLabel("Weight");
+		pnlBMI.add(lblWeightBMI1, "cell 0 3,alignx left");
 		
 		textWeight = new JTextField();
-		pnlBMI.add(textWeight, "cell 1 3,alignx left");
+		pnlBMI.add(textWeight, "flowx,cell 1 3");
 		textWeight.setColumns(10);
 		
 		JButton btnCalculate = new JButton("Calculate");
@@ -131,6 +111,19 @@ public class FatBlaster {
 		
 		JLabel lblBMI = new JLabel("Your BMI is 21.3");
 		pnlBMI.add(lblBMI, "cell 1 5");
+		
+		JLabel lblHeight1 = new JLabel("metres");
+		pnlBMI.add(lblHeight1, "cell 1 2");
+		
+		JLabel lblWeightBMI2 = new JLabel("kg");
+		pnlBMI.add(lblWeightBMI2, "cell 1 3");
+		
+		textHeight2 = new JTextField();
+		pnlBMI.add(textHeight2, "cell 1 2");
+		textHeight2.setColumns(10);
+		
+		JLabel lblHeight2 = new JLabel("centimetres");
+		pnlBMI.add(lblHeight2, "cell 1 2");
 		
 		JPanel pnlBMR = new JPanel();
 		tabbedPane.addTab("BMR", null, pnlBMR, null);
@@ -364,14 +357,57 @@ public class FatBlaster {
 				tabIndex = tabbedPane.getSelectedIndex();
 				if(tabIndex==0)
 				{
-					String height = textHeight.getText();
+					if(metric)
+					{
+					String height = textHeight1.getText();
+					String height2 = textHeight2.getText();
 					String weight = textWeight.getText();
 					float BMI;
-					BMI= BMI(Float.parseFloat(height),Float.parseFloat(weight));
+					BMI= BMI(	(	(Float.parseFloat(height))	+	Float.parseFloat(height2)/100),	Float.parseFloat(weight)	);
 					lblBMI.setText("Your BMI is:"+Float.toString(BMI));
+					}
+					else if(!metric)
+					{
+						String height = textHeight1.getText();
+						String height2 = textHeight2.getText();
+						String weight = textWeight.getText();
+						float BMI;
+						BMI= BMI(	(	(Float.parseFloat(height)*12)	+	Float.parseFloat(height2)	),	Float.parseFloat(weight)	);
+						lblBMI.setText("Your BMI is:"+ Float.toString(BMI));
+					}
 				}
 			}
 		});
+		rdBtnMetric.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e)
+			{
+				metric=true;
+				if(rdBtnImperial.isSelected())
+				{
+					rdBtnImperial.setSelected(false);
+					lblHeight1.setText("metres");
+					lblHeight2.setText("centimetres");
+					lblWeightBMI2.setText("kg");
+					
+				}
+			}
+		});
+		rdBtnImperial.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) 
+			{
+				metric=false;
+				if(rdBtnMetric.isSelected())
+				{
+					rdBtnMetric.setSelected(false);
+					lblHeight1.setText("feet");
+					lblHeight2.setText("inches");
+					lblWeightBMI2.setText("pounds");
+				}
+			}
+		});
+
 	}
 
 	public float BMI(float height,float weight)
